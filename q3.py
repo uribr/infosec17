@@ -23,9 +23,9 @@ def get_nop_slide(number_of_nops):
 def encoder(shellcode, length):
     encoded_shellcode = ''
     pos = list()
-    offset = 1
+    offset = 0
     for c in shellcode:
-        if(ord(c) >= 0x80):
+        if(ord(c) > ASCII_MAX):
         	encoded_shellcode = encoded_shellcode + chr(ord(c)^0xff)
         	pos.append(offset)
         	offset = 1 
