@@ -71,11 +71,6 @@ class GadgetSearch(object):
                     indices[j] += 1
         return combinations
 
-
-            
-
-
-
     def format_all_gadgets(self, gadget_format, registers):
         """
         Format all the possible gadgets for this format with the given
@@ -103,7 +98,6 @@ class GadgetSearch(object):
                 gadget_string[i] = gadget_string[i].format(*regs)
                 i += 1
         return gadget_string
-
 
     def find_all(self, gadget):
         """
