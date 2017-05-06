@@ -1,6 +1,6 @@
 import assemble
 import string
-
+import mmap
 
 GENERAL_REGISTERS = [
     'eax', 'ebx', 'ecx', 'edx', 'esi', 'edi'
@@ -98,11 +98,11 @@ class GadgetSearch(object):
         nregs = self.get_format_count(gadget_format)
         combinations = self.get_register_combos(nregs, registers)
         gadget_string = [gadget_format]*len(combinations)
-        print(gadget_string)
-        for i in range(len(combinations)):
-            print(i)
-            gadget_string[i].format(list(combinations[i]))
-            print(gadget_string[i])
+        i = 0
+        for combo in combinations:
+            for regs in zip(*[iter(combo)]*nregs):
+                gadget_string[i] = gadget_string[i].format(*regs)
+                i += 1
         return gadget_string
 
 
@@ -118,7 +118,15 @@ class GadgetSearch(object):
         # 1. Addresses are ABSOLUTE (for example, 0x08403214), NOT RELATIVE to the
         #    beginning of the file (for example, 12).
         # 2. Don't forget to add the 'RET'
-        raise NotImplementedError()
+        addresses = []
+        gadget_opcodes = assemble.assemble_data(gadget+'; RET')
+        with open(self.path, "rw+b") as lib_c:
+            memmap = mmap.mmap(lib_c.fileno(),0)
+            offset = memmap.find(gadget_opcodes)
+            while(offset != -1):
+                addresses.append(self.sa + offset)
+
+        return addresses
 
     def find(self, gadget, condition=None):
         """
@@ -144,7 +152,10 @@ class GadgetSearch(object):
                 ('POP ecx; POP esi', address2),
                 ...]
         """
-        raise NotImplementedError()
+        gadgets = []
+        for raw_gadget in format_all_gadgets(self, gadget_format, registers):
+            gadgets.append(tuple(raw_gadget, find(raw_gadget)))
+        return gadgets
 
     def find_format(self, gadget_format, registers=GENERAL_REGISTERS, condition=None):
         """
@@ -159,12 +170,3 @@ class GadgetSearch(object):
         except StopIteration:
             raise ValueError(
                 "Couldn't find matching address for " + gadget_format)
-def main():
-    gad = GadgetSearch('./libc.bin', 0xb0000000)
-    gad.get_format_count('POP ebx')
-    gad.format_all_gadgets("POP {0}; ADD {0}, {1}", ('eax','ecx'))
-    
-
-
-if __name__ == "__main__":
-    main()
