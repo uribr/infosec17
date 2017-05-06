@@ -1,0 +1,1 @@
+Using the same trick as in previous questions I used a loop to find out when I overwrite the return address; after 66 'a's the next 4 bytes become the return address.
