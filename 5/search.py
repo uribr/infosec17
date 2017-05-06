@@ -63,7 +63,6 @@ class GadgetSearch(object):
         for i in range(number_of_combinations):
             combinations.append(list(['']*nregs))
             for j in range(nregs):
-                print('i = ' + str(i) + ' j = ' + str(j))
                 combinations[i][j] = registers[indices[j]]
                 if j == 0:
                     indices[j] += 1 
@@ -119,12 +118,17 @@ class GadgetSearch(object):
         #    beginning of the file (for example, 12).
         # 2. Don't forget to add the 'RET'
         addresses = []
+        offset = 0
         gadget_opcodes = assemble.assemble_data(gadget+'; RET')
         with open(self.path, "rw+b") as lib_c:
+            #string = read(lib_c)
+            #offset = string.find(gadget_opcodes, offset)
             memmap = mmap.mmap(lib_c.fileno(),0)
-            offset = memmap.find(gadget_opcodes)
+            offset = memmap.find(gadget_opcodes, offset)
             while(offset != -1):
-                addresses.append(self.sa + offset)
+                addresses.append(str(hex(self.sa + offset))[:-1])
+                offset = memmap.find(gadget_opcodes, offset+1)
+                # offset = string.find(gadget_opcodes, offset+1)
 
         return addresses
 
@@ -153,8 +157,9 @@ class GadgetSearch(object):
                 ...]
         """
         gadgets = []
-        for raw_gadget in format_all_gadgets(self, gadget_format, registers):
-            gadgets.append(tuple(raw_gadget, find(raw_gadget)))
+        for formatted_gadget in self.format_all_gadgets(gadget_format, registers):
+            for address in self.find_all(formatted_gadget):
+                gadgets.append([formatted_gadget, address])
         return gadgets
 
     def find_format(self, gadget_format, registers=GENERAL_REGISTERS, condition=None):
