@@ -1,0 +1,2 @@
+Doing pretty much the same as in q1b except this time we don't pad the 4 bytes between the system address and the \bin\sh address with 'a's but with the address of exit(num) and after the address of \bin\sh I've put the value 0x42 (=66 in base 10) as an argument (num) for exit.
+As for the python code, I done the exactly as Dan showed in class

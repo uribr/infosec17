@@ -121,6 +121,7 @@ class GadgetSearch(object):
             offset = memmap.find(gadget_opcodes, offset)
             while(offset != -1):
                 addresses.append(self.sa + offset)
+                print(hex(addresses[-1]))
                 offset = memmap.find(gadget_opcodes, offset+1)
                 # offset = string.find(gadget_opcodes, offset+1)
 
@@ -169,3 +170,8 @@ class GadgetSearch(object):
         except StopIteration:
             raise ValueError(
                 "Couldn't find matching address for " + gadget_format)
+
+    if __name__ == '__main__':
+        from search import GadgetSearch
+        s = GadgetSearch('./libc.bin', 0xbf7d672c0)
+        s.find('pop ecx; pop eax')

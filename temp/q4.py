@@ -13,7 +13,7 @@ def get_string(student_id):
 
 
 def get_arg():
-    
+    raise NotImplementedError()
 
 
 def main(argv):
