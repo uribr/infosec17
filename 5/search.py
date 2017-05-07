@@ -90,6 +90,8 @@ class GadgetSearch(object):
         # 2. You can use an array instead of specifying each argument. Use the
         #    internet, the force is strong with StackOverflow.
         nregs = self.get_format_count(gadget_format)
+        if nregs == 0:
+            return [gadget_format]
         combinations = self.get_register_combos(nregs, registers)
         gadget_string = [gadget_format]*len(combinations)
         i = 0

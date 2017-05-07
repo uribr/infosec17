@@ -1,0 +1,19 @@
+First I decided what gadgets I wanted (and verified they exist):
+pop ebp, add esp, 4, pop esp
+
+Then I draw the stack with these (and the other values needed) and got this:
+"Take me (313296550) to your leader!"
+MY_LOOP_ADDRESS
+POP_ESP_ADDRESS
+STRING_ADDRESS
+ADD_ESP_4BYTE_ADDRESS
+PUTS_ADDRESS
+PUTS_ADDRESS
+POP_EBP_ADDRESS
+6161616161...							//'a' * 66 	
+
+First, the RET (while advancing ESP to point to the first PUTS_ADDRESS occurrence) in check_password will take us to 'pop ebp' (whic advances ESP to the second occurrence of PUTS_ADDRESS) from here we'll return to puts which will treat ADD_ESP_4BYTES_ADDRESS as the return address and the STRING_ADDRESS as an argument. The ESP+4 brings ESP point to POP_ESP_ADDRESS  which laods the beginning of the loop (which is the address of the second occurrence of PUTS_ADDRESS) this increment by 4 is essential as without it the upon returning from puts we would've used our string as the return address instead of the POP_ESP_ADDRESS. 
+
+Finally, after all of this I've put the string at the end of all of this. I've done by simply appending it to the input I was passing to sudo which means it was simply written on the stack.
+
+As for overwriting our own code, by putting puts address in ebp when we jump to puts the first line pushes ebp and thus it overwites its own address (that we've put there originally) with ebp, which, surprise, surprise also has puts address! except that all other push and writes with regard to ebp happen above graphically and below address-wise to our loops body.
