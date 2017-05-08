@@ -1,6 +1,5 @@
 import assemble
-import string
-import mmap
+import string, mmap, itertools
 
 GENERAL_REGISTERS = [
     'eax', 'ebx', 'ecx', 'edx', 'esi', 'edi'
@@ -57,19 +56,7 @@ class GadgetSearch(object):
                 ['ebx', 'eax'],
                 ['ebx', 'ebx']]
         """
-        combinations = list()
-        indices = list([0]*nregs)
-        number_of_combinations = len(registers) * nregs
-        for i in range(number_of_combinations):
-            combinations.append(list(['']*nregs))
-            for j in range(nregs):
-                combinations[i][j] = registers[indices[j]]
-                if j == 0:
-                    indices[j] += 1 
-                elif indices[j - 1] == nregs:
-                    indices[j - 1] = 0
-                    indices[j] += 1
-        return combinations
+        return list(itertools.product(registers, repeat = nregs))
 
     def format_all_gadgets(self, gadget_format, registers):
         """
