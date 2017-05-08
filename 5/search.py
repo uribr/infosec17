@@ -124,9 +124,7 @@ class GadgetSearch(object):
             while(offset != -1):
                 addresses.append(self.sa + offset)
                 offset = memmap.find(gadget_opcodes, offset+1)
-                # offset = string.find(gadget_opcodes, offset+1)
-
-        return addresses
+                yield self.sa + offset
 
     def find(self, gadget, condition=None):
         """
@@ -151,12 +149,10 @@ class GadgetSearch(object):
             => [('POP eax; POP ebx', address1),
                 ('POP ecx; POP esi', address2),
                 ...]
-        """
-        gadgets = []
+        """        
         for formatted_gadget in self.format_all_gadgets(gadget_format, registers):
             for address in self.find_all(formatted_gadget):
-                gadgets.append([formatted_gadget, address])
-        return gadgets
+                yield [formatted_gadget, address]
 
     def find_format(self, gadget_format, registers=GENERAL_REGISTERS, condition=None):
         """
