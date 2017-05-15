@@ -1,10 +1,9 @@
+import assemble
 import server
 import struct
-import assemble
 
 PID_MARKER = 0x12345678
-PATH = '/home/user/6/q2.template'
-
+PATH = '/home/user/6/q4.template'
 class SolutionServer(server.EvadeAntivirusServer):
 
 	def get_payload(self, pid):

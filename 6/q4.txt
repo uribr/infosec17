@@ -1,0 +1,3 @@
+The q4.py is the same as q3.py with the path changed to '/home/user/6/q4.template' from /home/user/6/q3.template'.
+
+In q4.c, after the added if-else in the file I added the same code of q3.c and removed the detach (it is not needed here). Next I've added an infinite loop that waits for the antivirus to make as system call, catches that, checks its registers to see if it is a read operation and if so it changes the edx register (which is hte size of the file to be read in the case of a read syscall) and sets these registers back and finally returning to the beginning of the loop calling the PTRACE_SYSCALL again making the antivirus program resume (and execute the system call) until the next syscall is made.

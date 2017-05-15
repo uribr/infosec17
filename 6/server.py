@@ -74,7 +74,7 @@ class EvadeAntivirusServer(CommandServer):
         return 'pgrep antivirus'
 
     def get_antivirus_pid(self, product):
-        return int(product,10)
+        return product
 
     def handle_first_payload(self, payload, product):
         pid = int(self.get_antivirus_pid(product))

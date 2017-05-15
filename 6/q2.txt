@@ -1,0 +1,6 @@
+First off I wrote the q2.c program using the code from the recitation as a template.
+I've used (statically) assemble.py to get the opcodes of the following assembly code:
+'nop; sub eax, eax; ret' the nop is there so it will fill an entire word.
+Using gdb (print check_if_virus) I found the check_if_virus address and POKETEXT'ed that address with the above code.
+
+In q2.py get_payload I patched the q2.template binary and returned the patched data.

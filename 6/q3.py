@@ -1,9 +1,9 @@
+import assemble
 import server
 import struct
-import assemble
 
 PID_MARKER = 0x12345678
-PATH = '/home/user/6/q2.template'
+PATH = '/home/user/6/q3.template'
 
 class SolutionServer(server.EvadeAntivirusServer):
 
@@ -14,6 +14,7 @@ class SolutionServer(server.EvadeAntivirusServer):
 			new_data = data.replace(struct.pack('<L',PID_MARKER), struct.pack('<L',pid)) # now repalce it with the pid argument
 			
 		return new_data # Send over the complete binary
+
 
 
 	def print_handler(self, payload, product):

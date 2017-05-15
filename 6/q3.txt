@@ -1,0 +1,5 @@
+q3.py is the same as q2.py with the small change to the PATH variable so that the path is to q3.template and not to q2.template.
+
+In q3.c I used the same template from the recitation and again POKETEXT'ed but this time I did it at the plt.got snippet of check_if_virus which I found using IDA by double-clicking the functions' name which lead me to the plt entry and from there I followed the jmp to the got entry and took its address.
+
+I changed the address there to that of the is_directory function which I found using gdb (print is_directory) and thus when ever the antivirus program calls check_if_virus the plt entry will redirect it to is_directory and of couse the malware is not a directory but a file so it will always return 0 on our malware.
