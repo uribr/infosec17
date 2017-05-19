@@ -1,0 +1,3 @@
+Examining the validate_script method in run.py reveals that the function determines the length of the username and the password according to the input and not according to the database of valid username-password of existing users. 
+This means that the input can determine how many characters will be compared in the for-if that follows after the length had been determined and if we can make it compare 0 chars than we can get through to the execute_script method. 
+So the generate_exploit returns a string consisting of two ':' in a row and a command: "::echo hacked".

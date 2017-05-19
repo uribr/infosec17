@@ -19,6 +19,7 @@ def main(argv):
         example, path = True,  argv[2]
     if example:
         script = generate_example()
+        print(script)
     else:
         script = generate_exploit()
     with open(path, 'w') as writer:

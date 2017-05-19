@@ -1,0 +1,2 @@
+eval performs a dynamic evalution meaning it treats its input as code and execute it.
+by passing input such as "exit('hacked')" make the program exit while its return value is 'hacked' which gets printed.

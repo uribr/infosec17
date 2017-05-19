@@ -1,0 +1,7 @@
+I googled (as suggested) "exploiting pickle in python" and found the following pickle representation:
+cos
+system
+(S'/bin/sh'
+tR.
+
+And when pickle.load is used on a file containing this we get a shell (much better than printing hacked). Next I took this format and changed the '/bin/sh' part to 'echo hacked' and hard-coded it as generate_exploit return value in q2.py.

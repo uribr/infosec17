@@ -3,7 +3,7 @@ def generate_example():
 
 
 def generate_exploit():
-    raise NotImplementedError()
+    return 'exit("hacked")'
 
 
 def main(argv):

