@@ -1,0 +1,5 @@
+Using this filter 'http.request.method == "POST"' I filtered the HTTP POST packet from the rest.
+
+In q1.py's method packet_filter(packet) I first resolved the IP address of infosec17.cs.tau.ac.il and then verified that the packets' destination address agrees with the resolved IP. Next I verified the protocol and port of the packet and if they were TCP and HTTP then I returned True, otherwise False is returned.
+
+In q1.py's parse_packet(packet) I called the urlparse.urlparse on the param field of the packet where I saw in WireShark the username and password in plaintext and then used split twice in order to isolate the username and password as described in the code itself.
