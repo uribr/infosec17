@@ -1,0 +1,5 @@
+In q3.pys' is_packet_to_original_gateway method (Great name, can't wait for the sequel) I return true iff the packets' source mac address is not our mac address and the destination mac address is that of the default gateway, that way we won't poison ourselves.
+
+In the is_stolen_packet method I return true iff the destination mac address is our mac address while the destination ip address is not ours (meaning this is probably meant for the outside network, the internet and was supposed to go to the default gateway but didn't because of our poisoning) and both the source ip address and the source mac address are not ours.
+
+Finally, in create_poison I use Scapy to generate an ARP packet that looks like a reply of an ARP request meant for the default gateway only that the mac address is holds is our own, except that all the other fields are "correct" and do not deviate from the honest and benevolent usage of the ARP protocol.

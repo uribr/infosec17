@@ -1,0 +1,3 @@
+First I used q1.py's method filter_packet(packet) to check that this packet is an HTTP, TCP packet and that its destination address is that of the infosec website.
+If the call returns true, I then check the content of the packet (the raw HTTP request) and make sure it is a GET request.
+Finally, I construct the response packet with some help from the recitation and GitHub ( https://gist.github.com/inaz2/e4f06900ab75a908ebf15446a7575edb) on how to build a packet layer by layer using Scapy.
