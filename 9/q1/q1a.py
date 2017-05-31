@@ -5,12 +5,15 @@ def stealth_syn_scan(ip, ports, timeout):
     statuses = []
     for port in ports:
         cyber_ninja_packet = IP(dst = ip) / TCP(dport = port, flags = 'S')
-        tcp_response_flags = sr1(cyber_ninja_packet, timeout = timeout, verbose = False).sprintf("%TCP.flags%")
-        #time.sleep(timeout)
+        response = sr1(cyber_ninja_packet, timeout = timeout, verbose = False)
+      
 
-        if tcp_response_flags == None:
+        if response == None:
             statuses += ['filtered'] 
-        elif 'S' in tcp_response_flags and 'A' in tcp_response_flags:
+        else :
+        	tcp_response_flags = response.sprintf("%TCP.flags%")    
+
+        if 'S' in tcp_response_flags and 'A' in tcp_response_flags:
             statuses += ['open']
             send(IP(dst = ip) / TCP(dport = port, flags = 'RA'), verbose = False)
         elif 'R' in tcp_response_flags:
