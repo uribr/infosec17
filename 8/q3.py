@@ -1,11 +1,5 @@
 import scapy.all as S
 
-GATEWAY_MAC_ADDRESS = '52:54:00:12:35:00'
-GATEWAY_IP_ADDRESS = '10.0.2.1'
-
-HOST_MAC_ADDRESS = '08:00:27:1a:d5:63'
-HOST_IP_ADDRESS = '10.0.2.15'
-
 class ArpPoisoner(object):
     def __init__(self, our_ip, our_mac, gateway_ip, gateway_mac, debug):
         # WARNING: DO NOT EDIT THIS FUNCTION!

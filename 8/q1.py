@@ -34,10 +34,11 @@ def packet_filter(packet):
     """
     # Verify that the protocol is TCP.
     if S.TCP in packet:
+    	ip = packet.getlayer(S.IP)
         # Verify the application layer protocol (HTTP)
-        if packet[S.IP].dport == HTTP_PORT:
+        if ip.dport == HTTP_PORT:
             # Veryfy the destination address
-            if packet[S.IP].dst == socket.gethostbyname(WEBSITE):
+            if ip.dst == socket.gethostbyname(WEBSITE):
                 if len(packet[S.TCP].payload) > 0:
                     return True
     return False
