@@ -1,0 +1,1 @@
+First I check the packet is not empty and is a TCP packet, then I search for the forbidden word in the load of the TCP layer of the packet and if it contains it I add the packets' source IP to the unpersons set.

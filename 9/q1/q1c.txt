@@ -1,0 +1,1 @@
+We could use IP spoofing to send syn packets from many false IP's and because for each new IP the firewall allocates memory for the data structure that holds the SYN packets we can make the firewall resources run dry which will make it slow down or crash entirely.

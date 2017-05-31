@@ -1,0 +1,1 @@
+Using scapy I sniff the network communication, filtering any packet that is not a SYN packet and sending a SA TCP packet as a response with the appropriate destination IP, destination port and source port.

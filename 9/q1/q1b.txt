@@ -1,0 +1,5 @@
+I decided to use a dictionary with IPs as keys and the values are dictionaries with 3 entries: a minimum heap data structure (pythons' heapq), its current size and a boolean indicating if this IP is blocked.
+
+Whenever a new packet arrives first I take note of the time of its arrival, next I verify it has a TCP layer (and thus also an IP layer) and check if it has a SYN flag. Next I check whether  I've received packets from this IP before (using the dictionary keys() method) if I haven't I add it to the dictionary with size of 1, not blocked and a list with one element: the time of arrival.
+
+If this is a new packet from a known IP address than I use the min-heap pop method to remove all the packets whose time of arrival is more than 60 seconds ago (with respect to the new packets' time of arrival) and finaly check the count (after all the popping) and if it stands at 15 or more than I block this IP and flag it as such in the dictionary.

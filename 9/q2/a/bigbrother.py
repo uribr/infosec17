@@ -1,11 +1,16 @@
 from scapy.all import *
 
+FORBIDDEN_WORD = 'love'
 
 unpersons = set()
 
 
 def spy(packet):
-    pass # Reimplement me! (a1)
+    if packet != None:
+    	if packet.haslayer(TCP):
+    		if FORBIDDEN_WORD in packet.getlayer(TCP).sprintf('%TCP.load%'):
+    			unpersons.add(packet.getlayer(IP).src)
+    print(unpersons)
 
 
 def main():

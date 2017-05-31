@@ -1,7 +1,12 @@
 import socket
+from Crypto import *
 
+key = b'Valar Morghulis!'
 
 def receive_message(port):
+    iv = Random.new().read(AES.block_size)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+
     # Reimplement me! (a2)
     listener = socket.socket()
     try:
