@@ -1,0 +1,3 @@
+Adding an helper method to compute the shannon entropy of a tcp payload using the provided math.
+In the helper method (bluntly named shannon_entropy(string)) I first generate a dictionary with whose keys are the chars of the string (the tcp payload) and values are 0,
+next I recreate the dictionary but this time with a sligly different value so that each occurence of a character increases the value in the dictionary by 1 (trying to do so in one line didn't work and a direct loop isn't as fancy).
