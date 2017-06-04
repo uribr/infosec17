@@ -24,6 +24,8 @@ def stealth_syn_scan(ip, ports, timeout):
             send(IP(dst = ip) / TCP(dport = port, flags = 'RA'), verbose = False)
         elif 'R' in tcp_response_flags:
             statuses += ['closed']
+        else: 
+            statuses += ['filtered']
 
     return statuses
 

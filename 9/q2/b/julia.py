@@ -17,6 +17,7 @@ def is_last_packet(packet):
 
 	# check if this is the last packet using the seq number and the ack number
 	if packet != None and packet.haslayer(TCP):
+		handler(packet)
 		tcp = packet.getlayer(TCP)
 		if tcp.seq == tcp.ack - 1 and tcp.seq == number_of_packets:
 			return True
@@ -61,7 +62,7 @@ def filter(packet):
 
 def receive_message(port):
 	global string
-	sniff(lfilter = filter, prn = handler, stop_filter = is_last_packet)
+	sniff(lfilter = filter, stop_filter = is_last_packet)
 	# Some data manipulation (we sent it from LSB to MSB and built it the same way so we now need to invert the direction)
 	data.reverse() 
 	string = ''
