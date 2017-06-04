@@ -3,7 +3,7 @@ from time import *
 from heapq import *
 
 SYN_FLAG = 'S'
-
+HOST = '10.0.2.15'
 def on_packet(packet):
 	tcp = packet.getlayer(TCP)
 	ip = packet.getlayer(IP)
@@ -18,7 +18,7 @@ def is_syn_packet(packet):
 	# Similar to the beginning of on_packet(packet) in q1b.py.
 	if packet != None:
 		if packet.haslayer(TCP):
-			if packet.getlayer(TCP).sprintf('%TCP.flags%') == SYN_FLAG:
+			if packet.getlayer(IP).src != HOST and packet.getlayer(TCP).sprintf('%TCP.flags%') == SYN_FLAG:
 				return True
 	return False
 
