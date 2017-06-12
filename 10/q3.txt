@@ -1,0 +1,4 @@
+By exploiting the /whois command we get the system itself to post our image and "shellcode".
+Our shellcode consist of a function that simply checks if it is the first time by this user it has ran or not and if it isn't we hide the image.
+The function can tell which user saw the image already using local storage, keeping the username of the ones who already viewed it (i.e. their web browsers loaded it at least once).
+The Vulnerability again stems from string formatting and usage of %s in particular.

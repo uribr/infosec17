@@ -250,7 +250,6 @@ def handle_message(conn, username, message, channel):
                     result = 'Invalid user'
                 else:
                     conn.executescript("UPDATE users SET full_name = '%s' WHERE username = '%s'" % (name, user))
-                    conn.executescript(query)
                     result = 'Renamed %s' % user
         elif action == '?' or action == 'help':
             result = '<pre>%s</pre>' % '\n'.join([

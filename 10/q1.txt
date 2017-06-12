@@ -1,0 +1,4 @@
+In the login function of the server a cookie is created from the base64 encoding of the username.
+Using 'edward'.ecnode('base64') and setting the login cookie to this value will make it appear as if we are logged in as edward.
+The vulnerability is in the login_required function that upon receiveing a cookie simply verifies is there is a user whose username, encoded in base64, matches that cookie.
+The cookie is therefore deterministic and predictable if the username is known.

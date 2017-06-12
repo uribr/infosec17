@@ -1,4 +1,3 @@
-// Tested
 function Message(date, author, text, id) {
   this.date = date;
   this.author = author;
@@ -36,7 +35,6 @@ var shown_channels = [];
 var current_channel = null;
 var showing_lonely = false;
 
-// Tested
 function ReceiveMessage(msg, channel, animate) {
   // Is this the first message in the channel?
   if (!(channel in db)) {
@@ -55,7 +53,6 @@ function ReceiveMessage(msg, channel, animate) {
   }
 }
 
-// Tested
 function MakeCell(text, css_class) {
   var result = document.createElement('td');
   result.innerHTML = text;
@@ -63,7 +60,6 @@ function MakeCell(text, css_class) {
   return result;
 }
 
-// Tested
 function ClearMessageDisplay() {
   $('#message-area').empty();
 }
@@ -79,7 +75,6 @@ function insertChild(parent, child, animate) {
 }
 
 
-// Tested
 function ShowMessage(msg, channel, animate) {
   if (showing_lonely) {
     // Clear away the empty message
@@ -94,7 +89,6 @@ function ShowMessage(msg, channel, animate) {
 }
 
 
-// Tested
 function SwitchChannel(channel) {
   current_channel = channel;
   ClearMessageDisplay();
@@ -114,14 +108,12 @@ function SwitchChannel(channel) {
   $('#submit').prop('disabled', channel == '#system');
 }
 
-// Tested
 function SwitchChannelCallback(source) {
   // var source = event.target || event.srcElement;
   SwitchChannel(source.innerText);
 }
 
 
-// Tested
 function AddChannel(channel, animate) {
   if (shown_channels.indexOf(channel) == -1) {
     db[channel] = db[channel] || [];
@@ -144,6 +136,7 @@ function PostMessage() {
     status = JSON.parse(status);
     if (status.startsWith('#')) {
       SwitchChannel(status);
+      $('#message')[0].value = '';
     }
     else if (status != 'OK') {
       alert(status);

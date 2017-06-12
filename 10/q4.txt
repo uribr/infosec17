@@ -1,0 +1,6 @@
+I've exploited the /rename command using SQL Injection. At first I injected this:
+/rename bob Bob Marmite'; UPDATE users SET password = sha1('1234') WHERE username = 'bob'; --
+Which made all full names oof all the users become "Bob Marmite" which is rather undesirable (even if it DID reset bob's password) so I changed it so it won't harm the original command functionality:
+/rename bob Bob Marmite' WHERE username = 'bob'; UPDATE users SET password = sha1('1234') WHERE username = 'bob'; --
+
+The vulnerability itself stems from the usage of string formatting in the SQL query used in renaming, namely, the the strings 'bob' ([username]) and 'Bob Marmite' WHERE username = 'Bob Marmite' WHERE username = 'bob'; UPDATE users SET password = sha1('1234') WHERE username = 'bob'; -- ([new_fullname]) are directly pasted to the string with no validation whatsoever, the ; that comes after 'Bob Marmite' WHERE username = 'bob' terminates the renaming process, and then the SQL query that lies after it is executed as well:'UPDATE users SET password = sha1('1234') WHERE username = 'bob'; --' which resets Bobs password.
